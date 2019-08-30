@@ -2,8 +2,8 @@ package models
 
 // State - model that represents states of one task
 type State struct {
-	Base
-	Name        string `gorm:"unique;not_null" json:"name"`
+	Model
+	Name        string `gorm:"not_null" json:"name"`
 	Description string `json:"description"`
 	Slug        string `gorm:"unique;not_null" json:"slug"`
 }

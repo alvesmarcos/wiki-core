@@ -2,12 +2,14 @@ package models
 
 // Action - represents action that one task can do
 type Action struct {
-	Base
+	Model
 	Description  string `json:"description"`
 	Caption      string `json:"caption"`
 	Help         string `json:"help"`
 	Interactive  bool   `json:"interactive"`
 	Confirmation bool   `json:"confirmation"`
+	// relationships
+	WorkflowID uint
 }
 
 // NewAction - to create a Action

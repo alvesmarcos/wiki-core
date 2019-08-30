@@ -11,6 +11,18 @@ type Action struct {
 }
 
 // NewAction - to create a Action
-func NewAction(description string, caption string, help string, interactive bool, confirmation bool) *Action {
-	return &Action{Description: description, Caption: caption, Help: help, Interactive: interactive, Confirmation: confirmation}
+func NewAction(
+	description string,
+	caption string,
+	help string,
+	interactive bool,
+	confirmation bool) *Action {
+
+	return &Action{
+		Description:  description,
+		Caption:      caption,
+		Help:         help,
+		Interactive:  interactive,
+		Confirmation: confirmation,
+	}
 }

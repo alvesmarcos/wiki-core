@@ -1,15 +1,20 @@
 package models
 
+import (
+	"github.com/jinzhu/gorm"
+)
+
 // Action - represents action that one task can do
 type Action struct {
-	Model
-	Description  string `json:"description"`
-	Caption      string `json:"caption"`
+	// extends
+	gorm.Model
+	// fields
+	Description  string `gorm:"not_null" json:"description"`
+	Caption      string `gorm:"not_null" json:"caption"`
 	Help         string `json:"help"`
-	Interactive  bool   `json:"interactive"`
-	Confirmation bool   `json:"confirmation"`
-	// relationships
-	WorkflowID uint
+	Interactive  bool   `gorm:"not_null" json:"interactive"`
+	Confirmation bool   `gorm:"not_null" json:"confirmation"`
+	Slug         string `gorm:"unique;not_null" json:"slug"`
 }
 
 // NewAction - to create a Action
@@ -18,7 +23,9 @@ func NewAction(
 	caption string,
 	help string,
 	interactive bool,
-	confirmation bool) *Action {
+	confirmation bool,
+	slug string,
+) *Action {
 
 	return &Action{
 		Description:  description,
@@ -26,5 +33,6 @@ func NewAction(
 		Help:         help,
 		Interactive:  interactive,
 		Confirmation: confirmation,
+		Slug:         slug,
 	}
 }

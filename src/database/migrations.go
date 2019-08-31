@@ -46,10 +46,24 @@ func RunMigrations() *gorm.DB {
 
 	// migrate models
 	db.AutoMigrate(
-		&models.Action{}, &models.State{}, &models.TaskType{}, &models.Workflow{},
+		&models.User{},
+		&models.Context{},
+		&models.Action{},
+		&models.State{},
+		&models.TaskType{},
+		&models.Workflow{},
+		&models.ObjectType{},
+		&models.Object{},
+		&models.Task{},
+		&models.Assignment{},
+		&models.ActionAssignment{},
 	)
 	// add constraints if model has
 	models.AddWorkflowConstraints(db)
+	models.AddObjectConstraints(db)
+	models.AddTaskConstraints(db)
+	models.AddAssignmentConstraints(db)
+	models.AddActionAssignmentConstraints(db)
 
 	return db
 }

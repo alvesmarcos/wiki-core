@@ -20,6 +20,21 @@ type Workflow struct {
 	ActionID    uint `json:"-"`
 }
 
+// NewWorkflow - to create a NewWorkflow
+func NewWorkflow(
+	taskType TaskType,
+	statePrev State,
+	stateNext State,
+	action Action,
+) *Workflow {
+	return &Workflow{
+		TaskType:  taskType,
+		StatePrev: statePrev,
+		StateNext: stateNext,
+		Action:    action,
+	}
+}
+
 // AddWorkflowConstraints -
 func AddWorkflowConstraints(db *gorm.DB) {
 	db.Model(&Workflow{}).AddForeignKey(
@@ -34,19 +49,4 @@ func AddWorkflowConstraints(db *gorm.DB) {
 	db.Model(&Workflow{}).AddForeignKey(
 		"action_id", "actions(id)", "SET NULL", "CASCADE",
 	)
-}
-
-// NewWorkflow - to create a NewWorkflow
-func NewWorkflow(
-	taskType TaskType,
-	statePrev State,
-	stateNext State,
-	action Action,
-) *Workflow {
-	return &Workflow{
-		TaskType:  taskType,
-		StatePrev: statePrev,
-		StateNext: stateNext,
-		Action:    action,
-	}
 }

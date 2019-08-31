@@ -1,13 +1,9 @@
 package models
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 // Action - represents action that one task can do
 type Action struct {
 	// extends
-	gorm.Model
+	Model
 	// fields
 	Description  string `gorm:"not_null" json:"description"`
 	Caption      string `gorm:"not_null" json:"caption"`

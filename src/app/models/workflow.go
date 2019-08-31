@@ -7,17 +7,17 @@ import (
 // Workflow - A mapper of all states that a task can be
 type Workflow struct {
 	// extends
-	gorm.Model
+	Model
 	// fields
 	TaskType  TaskType `gorm:"foreignkey:TaskTypeID" json:"task_type"`
 	StatePrev State    `gorm:"foreignkey:StatePrevID" json:"state_prev"`
 	StateNext State    `gorm:"foreignkey:StateNextID" json:"state_next"`
 	Action    Action   `gorm:"foreignkey:ActionID" json:"action"`
 	// relationships
-	TaskTypeID  uint
-	StatePrevID uint
-	StateNextID uint
-	ActionID    uint
+	TaskTypeID  uint `json:"-"`
+	StatePrevID uint `json:"-"`
+	StateNextID uint `json:"-"`
+	ActionID    uint `json:"-"`
 }
 
 // AddWorkflowConstraints -

@@ -1,9 +1,7 @@
 package main
 
-import (
-	"fmt"
-)
+import "wikilibras-core/src/server"
 
 func main() {
-	fmt.Println("Wikilibras Hello World!")
+	server.Start(false)
 }

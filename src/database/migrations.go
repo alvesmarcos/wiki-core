@@ -35,13 +35,12 @@ func connect() (*gorm.DB, error) {
 }
 
 // RunMigrations - export tables without erase
-func RunMigrations(withSeeds bool) {
+func RunMigrations() *gorm.DB {
 	db, err := connect()
 
 	if err != nil {
 		log.Fatal(err)
-
-		return
+		return nil
 	}
 	db.LogMode(true)
 
@@ -52,8 +51,5 @@ func RunMigrations(withSeeds bool) {
 	// add constraints if model has
 	models.AddWorkflowConstraints(db)
 
-	// populate tables
-	if withSeeds {
-		RunSeeds(db)
-	}
+	return db
 }

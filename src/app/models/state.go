@@ -1,13 +1,9 @@
 package models
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 // State - model that represents states of one task
 type State struct {
 	// extends
-	gorm.Model
+	Model
 	// fields
 	Name        string `gorm:"not_null" json:"name"`
 	Description string `json:"description"`

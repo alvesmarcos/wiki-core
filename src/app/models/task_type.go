@@ -1,13 +1,9 @@
 package models
 
-import (
-	"github.com/jinzhu/gorm"
-)
-
 // TaskType - model that represents types of a task
 type TaskType struct {
 	// extends
-	gorm.Model
+	Model
 	// fields
 	Name        string `gorm:"not_null" json:"name"`
 	Description string `json:"description"`

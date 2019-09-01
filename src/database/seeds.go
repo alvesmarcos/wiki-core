@@ -176,10 +176,35 @@ func workflowSeeds(db *gorm.DB) {
 	)
 }
 
+func orientationSeeds(db *gorm.DB) {
+	db.Create(
+		models.NewOrientation(
+			"Positiva",
+			"TODO",
+			"positiva",
+		),
+	)
+	db.Create(
+		models.NewOrientation(
+			"Negativa",
+			"TODO",
+			"negativa",
+		),
+	)
+	db.Create(
+		models.NewOrientation(
+			"Indefinida",
+			"TODO",
+			"indefinida",
+		),
+	)
+}
+
 // RunSeeds - populate tables
 func RunSeeds(db *gorm.DB) {
 	stateSeeds(db)
 	actionSeeds(db)
 	taskTypeSeeds(db)
 	workflowSeeds(db)
+	orientationSeeds(db)
 }

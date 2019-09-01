@@ -7,11 +7,13 @@ type Object struct {
 	// extends
 	Model
 	// fields
-	Name        string     `gorm:"not_null" json:"name"`
-	Description string     `json:"description"`
-	Path        string     `gorm:"not_null" json:"path"`
-	ObjectType  ObjectType `gorm:"foreignKey:ObjectTypeID;not_null" json:"type"`
-	Context     Context    `gorm:"foreignKey:Context;not_null" json:"context"`
+	Name           string     `gorm:"not_null" json:"name"`
+	Description    string     `json:"description"`
+	Path           string     `gorm:"not_null" json:"path"`
+	NegativeReview uint       `gorm:"default:0" json:"negative_review"`
+	PositiveReview uint       `gorm:"default:0" json:"positive_review"`
+	ObjectType     ObjectType `gorm:"foreignKey:ObjectTypeID;not_null" json:"type"`
+	Context        Context    `gorm:"foreignKey:Context;not_null" json:"context"`
 	// relationships
 	ObjectTypeID uint `json:"-"`
 	ContextID    uint `json:"-"`
@@ -22,15 +24,19 @@ func NewObject(
 	name string,
 	description string,
 	path string,
+	negativeReview uint,
+	positiveReview uint,
 	objectType ObjectType,
 	context Context,
 ) *Object {
 	return &Object{
-		Name:        name,
-		Description: description,
-		Path:        path,
-		ObjectType:  objectType,
-		Context:     context,
+		Name:           name,
+		Description:    description,
+		Path:           path,
+		NegativeReview: negativeReview,
+		PositiveReview: positiveReview,
+		ObjectType:     objectType,
+		Context:        context,
 	}
 }
 

@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
@@ -28,23 +27,11 @@ func NewSessionController(db *gorm.DB) *SessionController {
 
 // StoreSession -
 func (s *SessionController) StoreSession(w http.ResponseWriter, r *http.Request) {
-	body, err := ioutil.ReadAll(r.Body)
-
-	if exceptions.HandlerErrors(
-		err, w, http.StatusText(http.StatusUnprocessableEntity), http.StatusUnprocessableEntity,
-	) {
-		return
-	}
-
 	var sessionValidator validators.SessionStoreValidator
-	err = json.Unmarshal(body, &sessionValidator)
-	if exceptions.HandlerErrors(
-		err, w, http.StatusText(http.StatusUnprocessableEntity), http.StatusUnprocessableEntity,
-	) {
-		return
-	}
 
-	err = sessionValidator.Validate()
+	json.NewDecoder(r.Body).Decode(&sessionValidator)
+
+	err := sessionValidator.Validate()
 	if exceptions.HandlerErrors(
 		err, w, err, http.StatusBadRequest,
 	) {
@@ -66,7 +53,7 @@ func (s *SessionController) StoreSession(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	tokenStr, _ := createToken(user.ID)
+	tokenStr := createToken(user.ID, w)
 	token := models.NewToken(tokenStr, "bearer", false, user)
 
 	err = s.db.Create(&token).Error
@@ -78,14 +65,23 @@ func (s *SessionController) StoreSession(w http.ResponseWriter, r *http.Request)
 	utils.SendJSON(w, token, http.StatusOK)
 }
 
-func createToken(userID uint) (string, error) {
+func createToken(userID uint, w http.ResponseWriter) string {
 	apiSecret := os.Getenv("API_SECRET")
+	expirationTime := time.Now().Add(time.Hour * 24)
+
 	claims := jwt.MapClaims{
 		"authorized": true,
 		"user_id":    userID,
-		"exp":        time.Now().Add(time.Hour * 1).Unix(),
+		"exp":        expirationTime.Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, _ := token.SignedString([]byte(apiSecret))
 
-	return token.SignedString([]byte(apiSecret))
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   tokenString,
+		Expires: expirationTime,
+	})
+
+	return tokenString
 }

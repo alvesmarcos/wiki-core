@@ -16,7 +16,7 @@ func HandlerErrors(
 ) bool {
 	if err != nil {
 		errors := ErrorShape{Message: message}
-		utils.SendJSON(w, errors, http.StatusNotFound)
+		utils.SendJSON(w, errors, code)
 		return true
 	}
 	return false

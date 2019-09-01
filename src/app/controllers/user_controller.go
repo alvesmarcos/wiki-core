@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 	"wikilibras-core/src/app/exceptions"
 	"wikilibras-core/src/app/models"
@@ -38,29 +37,17 @@ func (u *UserController) IndexUsers(w http.ResponseWriter, r *http.Request) {
 
 // StoreUsers - Post User
 func (u *UserController) StoreUsers(w http.ResponseWriter, r *http.Request) {
-	body, err := ioutil.ReadAll(r.Body)
-
-	if exceptions.HandlerErrors(
-		err, w, http.StatusText(http.StatusUnprocessableEntity), http.StatusUnprocessableEntity,
-	) {
-		return
-	}
-
 	var userValidator validators.UserStoreValidator
-	err = json.Unmarshal(body, &userValidator)
 
-	if exceptions.HandlerErrors(
-		err, w, http.StatusText(http.StatusUnprocessableEntity), http.StatusUnprocessableEntity,
-	) {
-		return
-	}
-	err = userValidator.Validate()
+	json.NewDecoder(r.Body).Decode(&userValidator)
 
+	err := userValidator.Validate()
 	if exceptions.HandlerErrors(
 		err, w, err, http.StatusBadRequest,
 	) {
 		return
 	}
+
 	user := models.NewUser(
 		userValidator.Name,
 		userValidator.CPF,
@@ -75,6 +62,5 @@ func (u *UserController) StoreUsers(w http.ResponseWriter, r *http.Request) {
 	) {
 		return
 	}
-
 	utils.SendJSON(w, user, http.StatusOK)
 }

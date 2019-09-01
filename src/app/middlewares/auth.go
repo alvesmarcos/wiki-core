@@ -15,7 +15,7 @@ func Authentication(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := tokenValid(r)
 		if exceptions.HandlerErrors(
-			err, w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized,
+			err, w, "You must provide a valid authenticated access token", http.StatusUnauthorized,
 		) {
 			return
 		}
@@ -26,7 +26,7 @@ func Authentication(next http.HandlerFunc) http.HandlerFunc {
 func tokenValid(r *http.Request) error {
 	apiSecret := os.Getenv("API_SECRET")
 	tokenString := extractToken(r)
-	// https://godoc.org/github.com/dgrijalva/jwt-go#example-Parse--Hmac
+
 	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])

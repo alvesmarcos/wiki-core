@@ -95,16 +95,6 @@ func actionSeeds(db *gorm.DB) {
 	)
 	db.Create(
 		models.NewAction(
-			"Avaliar Video Referencia Positivamente Ou Negativamente",
-			"Avaliar Video Referencia",
-			"Verifica o manual de instruções para dicas",
-			true,
-			true,
-			"avaliar-video",
-		),
-	)
-	db.Create(
-		models.NewAction(
 			"Aprovar Video Referencia",
 			"Aprovar",
 			"",
@@ -173,7 +163,7 @@ func workflowSeeds(db *gorm.DB) {
 
 	db.Where(models.TaskType{Slug: "propor-sinal"}).First(&taskType)
 	db.Where(models.State{Slug: "aguardando-video-referencia"}).First(&statePrev)
-	db.Where(models.State{Slug: "aguardando-video-referencia"}).First(&stateNext)
+	db.Where(models.State{Slug: "aguardando-avaliacao-video-referencia"}).First(&stateNext)
 	db.Where(models.Action{Slug: "adicionar-video"}).First(&action)
 
 	db.Create(

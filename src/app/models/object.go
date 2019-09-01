@@ -14,6 +14,7 @@ type Object struct {
 	Context     Context    `gorm:"foreignKey:Context;not_null" json:"context"`
 	// relationships
 	ObjectTypeID uint `json:"-"`
+	ContextID    uint `json:"-"`
 }
 
 // NewObject -

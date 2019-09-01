@@ -11,24 +11,6 @@ import (
 	"wikilibras-core/src/app/models"
 )
 
-func connect() (*gorm.DB, error) {
-	// database credentials
-	dialect := os.Getenv("DB_CONNECTION")
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	database := os.Getenv("DB_DATABASE")
-	password := os.Getenv("DB_PASSWORD")
-	username := os.Getenv("DB_USER")
-
-	return gorm.Open(
-		dialect,
-		fmt.Sprintf(
-			"host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
-			host, port, username, database, password,
-		),
-	)
-}
-
 // RunMigrations - export tables without erase
 func RunMigrations() *gorm.DB {
 	db, err := connect()
@@ -38,6 +20,10 @@ func RunMigrations() *gorm.DB {
 		return nil
 	}
 	db.LogMode(true)
+
+	// WARNING: this will drop tables without store your data
+	// drop tables
+	dropTables(db)
 
 	// migrate models
 	db.AutoMigrate(
@@ -63,4 +49,42 @@ func RunMigrations() *gorm.DB {
 	models.AddTokenConstraints(db)
 
 	return db
+}
+
+func connect() (*gorm.DB, error) {
+	// database credentials
+	dialect := os.Getenv("DB_CONNECTION")
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	database := os.Getenv("DB_DATABASE")
+	password := os.Getenv("DB_PASSWORD")
+	username := os.Getenv("DB_USER")
+
+	return gorm.Open(
+		dialect,
+		fmt.Sprintf(
+			"host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
+			host, port, username, database, password,
+		),
+	)
+}
+
+func dropTables(db *gorm.DB) {
+	val := os.Getenv("DROP_TABLE")
+	if val == "TRUE" {
+		db.DropTableIfExists(
+			&models.Token{},
+			&models.ActionAssignment{},
+			&models.Assignment{},
+			&models.Object{},
+			&models.ObjectType{},
+			&models.Workflow{},
+			&models.TaskType{},
+			&models.State{},
+			&models.Action{},
+			&models.Context{},
+			&models.Task{},
+			&models.User{},
+		)
+	}
 }

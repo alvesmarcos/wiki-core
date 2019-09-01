@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"wikilibras-core/src/app/controllers"
+	"wikilibras-core/src/app/middlewares"
 
 	"github.com/jinzhu/gorm"
 )
@@ -20,7 +21,7 @@ func NewStateRoutes(db *gorm.DB) *StateRoutes {
 		Route{
 			Method:  http.MethodGet,
 			Path:    "/states",
-			Handler: state.IndexStates,
+			Handler: middlewares.Authentication(state.IndexStates),
 		},
 	}
 	return &StateRoutes{routes: r}

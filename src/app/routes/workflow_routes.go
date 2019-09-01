@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"wikilibras-core/src/app/controllers"
+	"wikilibras-core/src/app/middlewares"
 
 	"github.com/jinzhu/gorm"
 )
@@ -20,7 +21,7 @@ func NewWorkflowRoutes(db *gorm.DB) *WorkflowRoutes {
 		Route{
 			Method:  http.MethodGet,
 			Path:    "/workflows",
-			Handler: workflow.IndexWorkflows,
+			Handler: middlewares.Authentication(workflow.IndexWorkflows),
 		},
 	}
 	return &WorkflowRoutes{routes: r}

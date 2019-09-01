@@ -17,6 +17,8 @@ func initHandlers(db *gorm.DB) []routes.Handler {
 		routes.NewActionRoutes(db),
 		routes.NewTaskTypeRoutes(db),
 		routes.NewWorkflowRoutes(db),
+		routes.NewUserRoutes(db),
+		routes.NewSessionRoutes(db),
 	}
 }
 

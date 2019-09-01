@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"wikilibras-core/src/app/controllers"
+	"wikilibras-core/src/app/middlewares"
 
 	"github.com/jinzhu/gorm"
 )
@@ -20,7 +21,7 @@ func NewTaskTypeRoutes(db *gorm.DB) *TaskTypeRoutes {
 		Route{
 			Method:  http.MethodGet,
 			Path:    "/task_types",
-			Handler: taskType.IndexTaskTypes,
+			Handler: middlewares.Authentication(taskType.IndexTaskTypes),
 		},
 	}
 	return &TaskTypeRoutes{routes: r}

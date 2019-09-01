@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"wikilibras-core/src/app/exceptions"
 	"wikilibras-core/src/app/models"
 	"wikilibras-core/src/app/utils"
 
@@ -20,13 +21,14 @@ func NewActionController(db *gorm.DB) *ActionController {
 }
 
 // IndexActions - Get all actions presents in action
-func (s *ActionController) IndexActions(w http.ResponseWriter, r *http.Request) {
+func (a *ActionController) IndexActions(w http.ResponseWriter, r *http.Request) {
 	var actions []models.Action
 
-	if err := s.db.Find(&actions).Error; err != nil {
-		utils.SendJSON(
-			w, http.StatusText(http.StatusNotFound), http.StatusNotFound,
-		)
+	err := a.db.Find(&actions).Error
+
+	if exceptions.HandlerErrors(
+		err, w, http.StatusText(http.StatusNotFound), http.StatusNotFound,
+	) {
 		return
 	}
 	utils.SendJSON(w, &actions, http.StatusOK)

@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"wikilibras-core/src/app/exceptions"
 	"wikilibras-core/src/app/models"
 	"wikilibras-core/src/app/utils"
 
@@ -23,10 +24,11 @@ func NewStateController(db *gorm.DB) *StateController {
 func (s *StateController) IndexStates(w http.ResponseWriter, r *http.Request) {
 	var states []models.State
 
-	if err := s.db.Find(&states).Error; err != nil {
-		utils.SendJSON(
-			w, http.StatusText(http.StatusNotFound), http.StatusNotFound,
-		)
+	err := s.db.Find(&states).Error
+
+	if exceptions.HandlerErrors(
+		err, w, http.StatusText(http.StatusNotFound), http.StatusNotFound,
+	) {
 		return
 	}
 	utils.SendJSON(w, &states, http.StatusOK)

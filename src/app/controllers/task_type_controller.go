@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"wikilibras-core/src/app/exceptions"
 	"wikilibras-core/src/app/models"
 	"wikilibras-core/src/app/utils"
 
@@ -20,13 +21,14 @@ func NewTaskTypeController(db *gorm.DB) *TaskTypeController {
 }
 
 // IndexTaskTypes - Get all taskTypes presents in taskType
-func (s *TaskTypeController) IndexTaskTypes(w http.ResponseWriter, r *http.Request) {
+func (t *TaskTypeController) IndexTaskTypes(w http.ResponseWriter, r *http.Request) {
 	var taskTypes []models.TaskType
 
-	if err := s.db.Find(&taskTypes).Error; err != nil {
-		utils.SendJSON(
-			w, http.StatusText(http.StatusNotFound), http.StatusNotFound,
-		)
+	err := t.db.Find(&taskTypes).Error
+
+	if exceptions.HandlerErrors(
+		err, w, http.StatusText(http.StatusNotFound), http.StatusNotFound,
+	) {
 		return
 	}
 	utils.SendJSON(w, &taskTypes, http.StatusOK)

@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"wikilibras-core/src/app/exceptions"
 	"wikilibras-core/src/app/models"
 	"wikilibras-core/src/app/utils"
 
@@ -20,13 +21,14 @@ func NewWorkflowController(db *gorm.DB) *WorkflowController {
 }
 
 // IndexWorkflows - Get all workflows presents in workflow
-func (s *WorkflowController) IndexWorkflows(w http.ResponseWriter, r *http.Request) {
+func (wf *WorkflowController) IndexWorkflows(w http.ResponseWriter, r *http.Request) {
 	var workflows []models.Workflow
 
-	if err := s.db.Find(&workflows).Error; err != nil {
-		utils.SendJSON(
-			w, http.StatusText(http.StatusNotFound), http.StatusNotFound,
-		)
+	err := wf.db.Find(&workflows).Error
+
+	if exceptions.HandlerErrors(
+		err, w, http.StatusText(http.StatusNotFound), http.StatusNotFound,
+	) {
 		return
 	}
 
@@ -37,10 +39,10 @@ func (s *WorkflowController) IndexWorkflows(w http.ResponseWriter, r *http.Reque
 
 	// index fields related
 	for index, element := range workflows {
-		s.db.First(&taskType, element.TaskTypeID)
-		s.db.First(&statePrev, element.StatePrevID)
-		s.db.First(&stateNext, element.StateNextID)
-		s.db.First(&action, element.ActionID)
+		wf.db.First(&taskType, element.TaskTypeID)
+		wf.db.First(&statePrev, element.StatePrevID)
+		wf.db.First(&stateNext, element.StateNextID)
+		wf.db.First(&action, element.ActionID)
 
 		workflows[index].TaskType = taskType
 		workflows[index].StateNext = stateNext

@@ -7,16 +7,11 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/joho/godotenv"
 
 	"wikilibras-core/src/app/models"
 )
 
 func connect() (*gorm.DB, error) {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 	// database credentials
 	dialect := os.Getenv("DB_CONNECTION")
 	host := os.Getenv("DB_HOST")
@@ -57,6 +52,7 @@ func RunMigrations() *gorm.DB {
 		&models.Task{},
 		&models.Assignment{},
 		&models.ActionAssignment{},
+		&models.Token{},
 	)
 	// add constraints if model has
 	models.AddWorkflowConstraints(db)
@@ -64,6 +60,7 @@ func RunMigrations() *gorm.DB {
 	models.AddTaskConstraints(db)
 	models.AddAssignmentConstraints(db)
 	models.AddActionAssignmentConstraints(db)
+	models.AddTokenConstraints(db)
 
 	return db
 }

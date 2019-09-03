@@ -13,7 +13,7 @@ import (
 // Authentication -
 func Authentication(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := tokenValid(r)
+		_, err := decodeToken(r)
 		if exceptions.HandlerErrors(
 			err, w, "You must provide a valid authenticated access token", http.StatusUnauthorized,
 		) {
@@ -23,20 +23,27 @@ func Authentication(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func tokenValid(r *http.Request) error {
+// GetUserAuth - s
+func GetUserAuth(r *http.Request) (jwt.MapClaims, error) {
+	// get claims
+	claims, err := decodeToken(r)
+	return claims, err
+}
+
+func decodeToken(r *http.Request) (jwt.MapClaims, error) {
 	apiSecret := os.Getenv("API_SECRET")
 	tokenString := extractToken(r)
 
-	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
 		return []byte(apiSecret), nil
 	})
-	if err != nil {
-		return err
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return claims, nil
 	}
-	return nil
+	return nil, err
 }
 
 func extractToken(r *http.Request) string {

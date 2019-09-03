@@ -67,7 +67,7 @@ func (s *SessionController) StoreSession(w http.ResponseWriter, r *http.Request)
 
 func createToken(userID uint, w http.ResponseWriter) string {
 	apiSecret := os.Getenv("API_SECRET")
-	expirationTime := time.Now().Add(time.Hour * 24)
+	expirationTime := time.Now().Add(time.Hour * 1)
 
 	claims := jwt.MapClaims{
 		"authorized": true,

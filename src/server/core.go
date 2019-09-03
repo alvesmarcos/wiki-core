@@ -20,6 +20,7 @@ func initHandlers(db *gorm.DB) []routes.Handler {
 		routes.NewUserRoutes(db),
 		routes.NewSessionRoutes(db),
 		routes.NewOrientationRoutes(db),
+		routes.NewContextRoutes(db),
 	}
 }
 

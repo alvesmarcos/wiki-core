@@ -81,10 +81,10 @@ func dropTables(db *gorm.DB) {
 			&models.ObjectType{},
 			&models.Workflow{},
 			&models.TaskType{},
+			&models.Task{},
 			&models.State{},
 			&models.Action{},
 			&models.Context{},
-			&models.Task{},
 			&models.User{},
 			&models.Orientation{},
 		)

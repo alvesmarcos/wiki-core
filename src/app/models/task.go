@@ -21,6 +21,7 @@ type Task struct {
 	CreatedByID   uint  `json:"-"`
 	CurrentUserID *uint `json:"-"`
 	ContextID     uint  `json:"-"`
+	StateID       uint  `json:"-"`
 }
 
 // NewTask -

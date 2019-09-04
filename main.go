@@ -1,11 +1,19 @@
 package main
 
 import (
+	"log"
+	"wikilibras-core/src/config"
 	"wikilibras-core/src/server"
 
-	_ "github.com/joho/godotenv/autoload"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	server.Start(true)
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	config.LoadConfig()
+
+	server.Start()
 }

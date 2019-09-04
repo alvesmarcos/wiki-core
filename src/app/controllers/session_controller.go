@@ -3,9 +3,9 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
-	"os"
 	"time"
 	"wikilibras-core/src/app/models"
+	"wikilibras-core/src/config"
 
 	"wikilibras-core/src/app/exceptions"
 	"wikilibras-core/src/app/utils"
@@ -66,7 +66,7 @@ func (s *SessionController) StoreSession(w http.ResponseWriter, r *http.Request)
 }
 
 func createToken(userID uint, w http.ResponseWriter) string {
-	apiSecret := os.Getenv("API_SECRET")
+	apiSecret := config.GetConfig().SecretKey
 	expirationTime := time.Now().Add(time.Hour * 1)
 
 	claims := jwt.MapClaims{

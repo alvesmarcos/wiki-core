@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"wikilibras-core/src/app/routes"
+	"wikilibras-core/src/config"
 	"wikilibras-core/src/database"
 
 	"github.com/gorilla/handlers"
@@ -21,17 +22,16 @@ func initHandlers(db *gorm.DB) []routes.Handler {
 		routes.NewSessionRoutes(db),
 		routes.NewOrientationRoutes(db),
 		routes.NewContextRoutes(db),
+		routes.NewTaskRoutes(db),
 	}
 }
 
 // Start - Initialize application
-func Start(withSeeds bool) {
+func Start() {
 	db := database.RunMigrations()
-
-	if withSeeds {
-		database.RunSeeds(db)
-	}
 	defer db.Close()
+
+	database.RunSeeds(db)
 
 	r := mux.NewRouter()
 	api := r.PathPrefix("/api/v1/").Subrouter()
@@ -42,6 +42,9 @@ func Start(withSeeds bool) {
 		}
 	}
 
-	http.Handle("/", r)
-	log.Fatal(http.ListenAndServe(":8080", handlers.CORS()(api)))
+	log.Fatal(
+		http.ListenAndServe(
+			config.GetConfig().Address, handlers.CORS()(api),
+		),
+	)
 }

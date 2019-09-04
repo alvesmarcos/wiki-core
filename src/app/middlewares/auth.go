@@ -1,11 +1,12 @@
 package middlewares
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
-	"os"
 	"strings"
 	"wikilibras-core/src/app/exceptions"
+	"wikilibras-core/src/config"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -31,7 +32,7 @@ func GetUserAuth(r *http.Request) (jwt.MapClaims, error) {
 }
 
 func decodeToken(r *http.Request) (jwt.MapClaims, error) {
-	apiSecret := os.Getenv("API_SECRET")
+	apiSecret := config.GetConfig().SecretKey
 	tokenString := extractToken(r)
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
@@ -40,10 +41,15 @@ func decodeToken(r *http.Request) (jwt.MapClaims, error) {
 		}
 		return []byte(apiSecret), nil
 	})
+
+	if err != nil {
+		return nil, err
+	}
+
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return claims, nil
 	}
-	return nil, err
+	return nil, errors.New("Unexpected jwt claims")
 }
 
 func extractToken(r *http.Request) string {

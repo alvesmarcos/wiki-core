@@ -7,151 +7,132 @@ import (
 )
 
 func taskTypeSeeds(db *gorm.DB) {
-	db.Create(
-		models.NewTaskType(
-			"Propor Sinal",
-			"Tarefa onde os usuários podem adicionar um sinal",
-			"propor-sinal",
-		),
+	db.Create(&models.TaskType{
+		Name:        "Propor Sinal",
+		Description: "Tarefa onde os usuários podem adicionar um sinal",
+		Slug:        "propor-sinal",
+	},
 	)
 }
 
 func stateSeeds(db *gorm.DB) {
 	db.Create(
-		models.NewState(
-			"Aguardando Video Referencia",
-			"TODO",
-			"aguardando-video-referencia",
-		),
+		&models.State{
+			Name:        "Aguardando Video Referencia",
+			Description: "TODO",
+			Slug:        "aguardando-video-referencia",
+		},
 	)
 	db.Create(
-		models.NewState(
-			"Aguardando Avaliacao Video Referencia",
-			"TODO",
-			"aguardando-avaliacao-video-referencia",
-		),
+		&models.State{
+			Name:        "Aguardando Avaliacao Video Referencia",
+			Description: "TODO",
+			Slug:        "aguardando-avaliacao-video-referencia",
+		},
 	)
 	db.Create(
-		models.NewState(
-			"Video Referencia Aprovado",
-			"TODO",
-			"video-referencia-aprovado",
-		),
+		&models.State{
+			Name:        "Video Referencia Aprovado",
+			Description: "TODO",
+			Slug:        "video-referencia-aprovado",
+		},
 	)
 	db.Create(
-		models.NewState(
-			"Video Referencia Reprovado",
-			"TODO",
-			"video-referencia-reprovado",
-		),
+		&models.State{
+			Name:        "Video Referencia Reprovado",
+			Description: "TODO",
+			Slug:        "video-referencia-reprovado",
+		},
 	)
 	db.Create(
-		models.NewState(
-			"Aguardando Avaliacao Animacao",
-			"TODO",
-			"aguardando-avaliacao-animacao",
-		),
+		&models.State{
+			Name:        "Aguardando Avaliacao Animacao",
+			Description: "TODO",
+			Slug:        "aguardando-avaliacao-animacao",
+		},
 	)
 	db.Create(
-		models.NewState(
-			"Animacao Aprovada",
-			"TODO",
-			"animacao-aprovada",
-		),
+		&models.State{
+			Name:        "Animacao Aprovada",
+			Description: "TODO",
+			Slug:        "animacao-aprovada",
+		},
 	)
 	db.Create(
-		models.NewState(
-			"Animacao Reprovada",
-			"TODO",
-			"animacao-reprovada",
-		),
+		&models.State{
+			Name:        "Animacao Reprovada",
+			Description: "TODO",
+			Slug:        "animacao-reprovada",
+		},
 	)
 	db.Create(
-		models.NewState(
-			"Aguardando Publicacao",
-			"TODO",
-			"aguardando-publicacao",
-		),
+		&models.State{
+			Name:        "Aguardando Publicacao",
+			Description: "TODO",
+			Slug:        "aguardando-publicacao",
+		},
 	)
 	db.Create(
-		models.NewState(
-			"Publicado",
-			"TODO",
-			"publicado",
-		),
+		&models.State{
+			Name:        "Publicado",
+			Description: "TODO",
+			Slug:        "publicado",
+		},
 	)
 }
 
 func actionSeeds(db *gorm.DB) {
 	db.Create(
-		models.NewAction(
-			"Informe o Video Referencia do Sinal",
-			"Adicionar Video",
-			"Formatos aceito .mov/.mp4",
-			true,
-			false,
-			"adicionar-video",
-		),
+		&models.Action{
+			Description: "Informe o Video Referencia do Sinal",
+			Caption:     "Adicionar Video",
+			Help:        "Formatos aceito .mov/.mp4",
+			Slug:        "adicionar-video",
+		},
 	)
 	db.Create(
-		models.NewAction(
-			"Aprovar Video Referencia",
-			"Aprovar",
-			"",
-			true,
-			true,
-			"aprovar-video",
-		),
+		&models.Action{
+			Description: "Aprovar Video Referencia",
+			Caption:     "Aprovar",
+			Slug:        "aprovar-video",
+		},
 	)
 	db.Create(
-		models.NewAction(
-			"Reprovar Video Referencia",
-			"Reprovar",
-			"",
-			true,
-			true,
-			"reprovar-video",
-		),
+		&models.Action{
+			Description: "Reprovar Video Referencia",
+			Caption:     "Reprovar",
+			Slug:        "reprovar-video",
+		},
 	)
 	db.Create(
-		models.NewAction(
-			"Informe a Animacao do Sinal",
-			"Adicionar Animacao",
-			"Formato aceito .blend",
-			true,
-			false,
-			"adicionar-animacao",
-		),
+		&models.Action{
+			Description: "Informe a Animacao do Sinal",
+			Caption:     "Adicionar Animacao",
+			Help:        "Formato aceito .blend",
+			Slug:        "adicionar-animacao",
+		},
 	)
 	db.Create(
-		models.NewAction(
-			"Aprovar Animacao",
-			"Aprovar",
-			"",
-			true,
-			true,
-			"aprovar-animacao",
-		),
+		&models.Action{
+			Description: "Aprovar Animacao",
+			Caption:     "Aprovar",
+			Slug:        "aprovar-animacao",
+		},
 	)
 	db.Create(
-		models.NewAction(
-			"Reprovar Animacao",
-			"Reprovar",
-			"",
-			true,
-			true,
-			"reprovar-animacao",
-		),
+		&models.Action{
+			Description: "Reprovar Animacao",
+			Caption:     "Reprovar",
+			Slug:        "reprovar-animacao",
+		},
 	)
 	db.Create(
-		models.NewAction(
-			"Gere o bundle da animação e publique o video",
-			"Publicar",
-			"Carregue o bundle gerado",
-			true,
-			true,
-			"publicar-sinal",
-		),
+		&models.Action{
+			Description: "Gere o bundle da animação e publique o video",
+			Caption:     "Publicar",
+			Help:        "Carregue o bundle gerado",
+			Slug:        "publicar-sinal",
+		},
 	)
 }
 
@@ -178,25 +159,25 @@ func workflowSeeds(db *gorm.DB) {
 
 func orientationSeeds(db *gorm.DB) {
 	db.Create(
-		models.NewOrientation(
-			"Positiva",
-			"TODO",
-			"positiva",
-		),
+		&models.Orientation{
+			Name:        "Positiva",
+			Description: "TODO",
+			Slug:        "positiva",
+		},
 	)
 	db.Create(
-		models.NewOrientation(
-			"Negativa",
-			"TODO",
-			"negativa",
-		),
+		&models.Orientation{
+			Name:        "Negativa",
+			Description: "TODO",
+			Slug:        "negativa",
+		},
 	)
 	db.Create(
-		models.NewOrientation(
-			"Indefinida",
-			"TODO",
-			"indefinida",
-		),
+		&models.Orientation{
+			Name:        "Indefinida",
+			Description: "TODO",
+			Slug:        "indefinida",
+		},
 	)
 }
 

@@ -3,9 +3,10 @@ package database
 import (
 	"fmt"
 	"log"
-	"os"
+	"wikilibras-core/src/config"
 
 	"github.com/jinzhu/gorm"
+	// dialect gorm
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"wikilibras-core/src/app/models"
@@ -37,7 +38,7 @@ func RunMigrations() *gorm.DB {
 		&models.Object{},
 		&models.Task{},
 		&models.Assignment{},
-		&models.ActionAssignment{},
+		&models.ActionState{},
 		&models.Token{},
 		&models.Orientation{},
 	)
@@ -53,40 +54,33 @@ func RunMigrations() *gorm.DB {
 }
 
 func connect() (*gorm.DB, error) {
-	// database credentials
-	dialect := os.Getenv("DB_CONNECTION")
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	database := os.Getenv("DB_DATABASE")
-	password := os.Getenv("DB_PASSWORD")
-	username := os.Getenv("DB_USER")
-
 	return gorm.Open(
-		dialect,
+		config.GetConfig().Database.Connection,
 		fmt.Sprintf(
 			"host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
-			host, port, username, database, password,
+			config.GetConfig().Database.Host,
+			config.GetConfig().Database.Port,
+			config.GetConfig().Database.User,
+			config.GetConfig().Database.Name,
+			config.GetConfig().Database.Password,
 		),
 	)
 }
 
 func dropTables(db *gorm.DB) {
-	val := os.Getenv("DROP_TABLE")
-	if val == "TRUE" {
-		db.DropTableIfExists(
-			&models.Token{},
-			&models.ActionAssignment{},
-			&models.Assignment{},
-			&models.Object{},
-			&models.ObjectType{},
-			&models.Workflow{},
-			&models.TaskType{},
-			&models.Task{},
-			&models.State{},
-			&models.Action{},
-			&models.Context{},
-			&models.User{},
-			&models.Orientation{},
-		)
-	}
+	db.DropTableIfExists(
+		&models.Token{},
+		&models.ActionState{},
+		&models.Assignment{},
+		&models.Object{},
+		&models.ObjectType{},
+		&models.Workflow{},
+		&models.TaskType{},
+		&models.Task{},
+		&models.State{},
+		&models.Action{},
+		&models.Context{},
+		&models.User{},
+		&models.Orientation{},
+	)
 }

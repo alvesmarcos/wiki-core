@@ -28,6 +28,10 @@ func (u UserStoreValidator) Validate() error {
 			)),
 		),
 		validation.Field(&u.Email, is.Email),
-		validation.Field(&u.ProfilesID, validation.Required),
+		validation.Field(
+			&u.ProfilesID,
+			validation.Required,
+			validation.By(uniqueID("does not match with password provided")),
+		),
 	)
 }

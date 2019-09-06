@@ -15,3 +15,18 @@ func stringEquals(str, erroMsg string) validation.RuleFunc {
 		return nil
 	}
 }
+
+func uniqueID(erroMsg string) validation.RuleFunc {
+	return func(value interface{}) error {
+		ids, _ := value.([]uint)
+
+		for i := 0; i < len(ids); i++ {
+			for j := i; j < len(ids); j++ {
+				if ids[i] == ids[j] {
+					return errors.New(erroMsg)
+				}
+			}
+		}
+		return nil
+	}
+}

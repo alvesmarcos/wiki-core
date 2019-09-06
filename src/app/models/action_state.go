@@ -16,8 +16,8 @@ type ActionState struct {
 	StateID  uint
 }
 
-// AddActionAssignmentConstraints -
-func AddActionAssignmentConstraints(db *gorm.DB) {
+// AddActionStateConstraints -
+func AddActionStateConstraints(db *gorm.DB) {
 	db.Model(&ActionState{}).AddForeignKey(
 		"action_id", "actions(id)", "CASCADE", "CASCADE",
 	)

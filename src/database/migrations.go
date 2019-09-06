@@ -41,14 +41,17 @@ func RunMigrations() *gorm.DB {
 		&models.ActionState{},
 		&models.Token{},
 		&models.Orientation{},
+		&models.Profile{},
+		&models.UserProfile{},
 	)
 	// add constraints if model has
 	models.AddWorkflowConstraints(db)
 	models.AddObjectConstraints(db)
 	models.AddTaskConstraints(db)
 	models.AddAssignmentConstraints(db)
-	models.AddActionAssignmentConstraints(db)
+	models.AddActionStateConstraints(db)
 	models.AddTokenConstraints(db)
+	models.AddUserProfileConstraints(db)
 
 	return db
 }
@@ -80,7 +83,9 @@ func dropTables(db *gorm.DB) {
 		&models.State{},
 		&models.Action{},
 		&models.Context{},
+		&models.UserProfile{},
 		&models.User{},
 		&models.Orientation{},
+		&models.Profile{},
 	)
 }

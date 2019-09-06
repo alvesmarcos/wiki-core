@@ -46,9 +46,23 @@ func stateSeeds(db *gorm.DB) {
 	)
 	db.Create(
 		&models.State{
+			Name:        "Aguardando Animacao",
+			Description: "TODO",
+			Slug:        "aguardando-animacao",
+		},
+	)
+	db.Create(
+		&models.State{
 			Name:        "Aguardando Avaliacao Animacao",
 			Description: "TODO",
 			Slug:        "aguardando-avaliacao-animacao",
+		},
+	)
+	db.Create(
+		&models.State{
+			Name:        "Aguardando Video Animacao",
+			Description: "TODO",
+			Slug:        "aguardando-video-animacao",
 		},
 	)
 	db.Create(
@@ -162,21 +176,52 @@ func orientationSeeds(db *gorm.DB) {
 		&models.Orientation{
 			Name:        "Positiva",
 			Description: "TODO",
-			Slug:        "positiva",
+			Slug:        "positive",
 		},
 	)
 	db.Create(
 		&models.Orientation{
 			Name:        "Negativa",
 			Description: "TODO",
-			Slug:        "negativa",
+			Slug:        "nagative",
 		},
 	)
 	db.Create(
 		&models.Orientation{
 			Name:        "Indefinida",
 			Description: "TODO",
-			Slug:        "indefinida",
+			Slug:        "undefined",
+		},
+	)
+}
+
+func profileSeeds(db *gorm.DB) {
+	db.Create(
+		&models.Profile{
+			Name:        "Moderador",
+			Description: "TODO",
+			Slug:        "moderator",
+		},
+	)
+	db.Create(
+		&models.Profile{
+			Name:        "Colaborador",
+			Description: "TODO",
+			Slug:        "colaborator",
+		},
+	)
+	db.Create(
+		&models.Profile{
+			Name:        "Animador",
+			Description: "TODO",
+			Slug:        "animator",
+		},
+	)
+	db.Create(
+		&models.Profile{
+			Name:        "Especialista",
+			Description: "TODO",
+			Slug:        "expert",
 		},
 	)
 }
@@ -188,4 +233,5 @@ func RunSeeds(db *gorm.DB) {
 	taskTypeSeeds(db)
 	workflowSeeds(db)
 	orientationSeeds(db)
+	profileSeeds(db)
 }

@@ -32,6 +32,20 @@ func (u *UserController) IndexUsers(w http.ResponseWriter, r *http.Request) {
 	) {
 		return
 	}
+
+	for index, user := range users {
+		var profiles []models.Profile
+		var userProfiles []models.UserProfile
+		var profile models.Profile
+
+		u.db.Where(&models.UserProfile{UserID: user.ID}).Find(&userProfiles)
+
+		for _, element := range userProfiles {
+			u.db.First(&profile, element.ProfileID)
+			profiles = append(profiles, profile)
+		}
+		users[index].Profiles = profiles
+	}
 	utils.SendJSON(w, &users, http.StatusOK)
 }
 
@@ -48,11 +62,27 @@ func (u *UserController) StoreUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var profiles []models.Profile
+
+	for _, element := range userValidator.ProfilesID {
+		var profile models.Profile
+
+		err = u.db.First(&profile, element).Error
+
+		if exceptions.HandlerErrors(
+			err, w, "Profile ID does not exist", http.StatusNotFound,
+		) {
+			return
+		}
+		profiles = append(profiles, profile)
+	}
+
 	user := models.NewUser(
 		userValidator.Name,
 		userValidator.CPF,
 		userValidator.Email,
 		userValidator.Password,
+		profiles,
 	)
 	user.HashPassword()
 
@@ -62,5 +92,10 @@ func (u *UserController) StoreUsers(w http.ResponseWriter, r *http.Request) {
 	) {
 		return
 	}
+
+	for _, element := range profiles {
+		u.db.Create(&models.UserProfile{User: *user, Profile: element})
+	}
+
 	utils.SendJSON(w, user, http.StatusOK)
 }

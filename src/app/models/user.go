@@ -9,15 +9,16 @@ type User struct {
 	// extends
 	Model
 	// fields
-	Name     string `gorm:"not_null" json:"name"`
-	CPF      string `gorm:"unique;not_null" json:"cpf"`
-	Email    string `json:"email"`
-	Password string `gorm:"not_null" json:"-"`
+	Name     string    `gorm:"not_null" json:"name"`
+	CPF      string    `gorm:"unique;not_null" json:"cpf"`
+	Email    string    `json:"email"`
+	Password string    `gorm:"not_null" json:"-"`
+	Profiles []Profile `json:"profiles"`
 }
 
 // NewUser -
-func NewUser(name, cpf, email, password string) *User {
-	return &User{Name: name, CPF: cpf, Email: email, Password: password}
+func NewUser(name string, cpf string, email string, password string, profiles []Profile) *User {
+	return &User{Name: name, CPF: cpf, Email: email, Password: password, Profiles: profiles}
 }
 
 // HashPassword - encryp password

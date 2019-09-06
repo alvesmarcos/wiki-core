@@ -12,6 +12,7 @@ type UserStoreValidator struct {
 	Password             string `json:"password"`
 	PasswordConfirmation string `json:"password_confirmation"`
 	Email                string `json:"email"`
+	ProfilesID           []uint `json:"profiles_id"`
 }
 
 // Validate - ValidateUserStore
@@ -27,5 +28,6 @@ func (u UserStoreValidator) Validate() error {
 			)),
 		),
 		validation.Field(&u.Email, is.Email),
+		validation.Field(&u.ProfilesID, validation.Required),
 	)
 }

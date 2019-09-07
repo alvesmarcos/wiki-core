@@ -85,6 +85,14 @@
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:9076c624a9ba7139076876b5440b0d90115349fb709abbf2e41e115011fa7876"
+  name = "github.com/unrolled/secure"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "f216236dcfc980ca06e5e4281a74f8869fb590fd"
+  version = "v1.0.1"
+
+[[projects]]
   branch = "master"
   digest = "1:9d5b5d543996dd584da1db1e0de1926f3e4c3a8dba0fa2f8db70f3ebee2342e0"
   name = "golang.org/x/crypto"
@@ -107,6 +115,7 @@
     "github.com/jinzhu/gorm",
     "github.com/jinzhu/gorm/dialects/postgres",
     "github.com/joho/godotenv",
+    "github.com/unrolled/secure",
     "golang.org/x/crypto/bcrypt",
   ]
   solver-name = "gps-cdcl"

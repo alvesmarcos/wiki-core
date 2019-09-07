@@ -226,6 +226,27 @@ func profileSeeds(db *gorm.DB) {
 	)
 }
 
+func objectTypes(db *gorm.DB) {
+	db.Create(
+		&models.ObjectType{
+			MineType:    "video/mov",
+			Description: "Arquivos com este tipo de extensao sao utilizados para video",
+		},
+	)
+	db.Create(
+		&models.ObjectType{
+			MineType:    "video/mp4",
+			Description: "Arquivos com este tipo de extensao sao utilizados para video",
+		},
+	)
+	db.Create(
+		&models.ObjectType{
+			MineType:    "blender",
+			Description: "Arquivos com este tipo de extensao sao utilizados para animacao",
+		},
+	)
+}
+
 // RunSeeds - populate tables
 func RunSeeds(db *gorm.DB) {
 	stateSeeds(db)
@@ -234,4 +255,5 @@ func RunSeeds(db *gorm.DB) {
 	workflowSeeds(db)
 	orientationSeeds(db)
 	profileSeeds(db)
+	objectTypes(db)
 }

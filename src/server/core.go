@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
+	"github.com/unrolled/secure"
 )
 
 func initHandlers(db *gorm.DB) []routes.Handler {
@@ -24,6 +25,7 @@ func initHandlers(db *gorm.DB) []routes.Handler {
 		routes.NewContextRoutes(db),
 		routes.NewTaskRoutes(db),
 		routes.NewProfileRoutes(db),
+		routes.NewObjectRoutes(db),
 	}
 }
 
@@ -34,7 +36,14 @@ func Start() {
 
 	database.RunSeeds(db)
 
+	secureMiddleware := secure.New(secure.Options{
+		FrameDeny:          true,
+		BrowserXssFilter:   true,
+		ContentTypeNosniff: false,
+	})
+
 	r := mux.NewRouter()
+
 	api := r.PathPrefix("/api/v1/").Subrouter()
 
 	for _, h := range initHandlers(db) {
@@ -42,6 +51,8 @@ func Start() {
 			api.HandleFunc(route.Path, route.Handler).Methods(route.Method)
 		}
 	}
+
+	api.Use(secureMiddleware.Handler)
 
 	log.Fatal(
 		http.ListenAndServe(

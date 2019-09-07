@@ -9,11 +9,11 @@ type Object struct {
 	// fields
 	Name           string     `gorm:"not_null" json:"name"`
 	Description    string     `json:"description"`
-	Path           string     `gorm:"not_null" json:"path"`
+	Path           string     `json:"path"`
 	NegativeReview uint       `gorm:"default:0" json:"negative_review"`
 	PositiveReview uint       `gorm:"default:0" json:"positive_review"`
 	ObjectType     ObjectType `gorm:"foreignKey:ObjectTypeID;not_null" json:"type"`
-	Context        Context    `gorm:"foreignKey:Context;not_null" json:"context"`
+	Context        Context    `gorm:"foreignKey:ContextID;not_null" json:"context"`
 	// relationships
 	ObjectTypeID uint `json:"-"`
 	ContextID    uint `json:"-"`

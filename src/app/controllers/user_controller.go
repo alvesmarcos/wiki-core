@@ -70,7 +70,7 @@ func (u *UserController) StoreUsers(w http.ResponseWriter, r *http.Request) {
 		err = u.db.First(&profile, element).Error
 
 		if exceptions.HandlerErrors(
-			err, w, "Profile ID does not exist", http.StatusNotFound,
+			err, w, "profile_id does not exist", http.StatusNotFound,
 		) {
 			return
 		}

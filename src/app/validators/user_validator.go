@@ -31,7 +31,7 @@ func (u UserStoreValidator) Validate() error {
 		validation.Field(
 			&u.ProfilesID,
 			validation.Required,
-			validation.By(uniqueID("does not match with password provided")),
+			validation.By(uniqueID("equals id is not allowed")),
 		),
 	)
 }

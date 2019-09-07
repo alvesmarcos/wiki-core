@@ -21,7 +21,7 @@ func uniqueID(erroMsg string) validation.RuleFunc {
 		ids, _ := value.([]uint)
 
 		for i := 0; i < len(ids); i++ {
-			for j := i; j < len(ids); j++ {
+			for j := i + 1; j < len(ids); j++ {
 				if ids[i] == ids[j] {
 					return errors.New(erroMsg)
 				}

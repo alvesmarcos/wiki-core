@@ -33,19 +33,10 @@ func (u *UserController) IndexUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for index, user := range users {
-		var profiles []models.Profile
-		var userProfiles []models.UserProfile
-		var profile models.Profile
-
-		u.db.Where(&models.UserProfile{UserID: user.ID}).Find(&userProfiles)
-
-		for _, element := range userProfiles {
-			u.db.First(&profile, element.ProfileID)
-			profiles = append(profiles, profile)
-		}
-		users[index].Profiles = profiles
+	for index := range users {
+		users[index].LoadRelationships(u.db)
 	}
+
 	utils.SendJSON(w, &users, http.StatusOK)
 }
 

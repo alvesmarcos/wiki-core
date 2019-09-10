@@ -56,7 +56,7 @@ func (c *ContextController) StoreContexts(w http.ResponseWriter, r *http.Request
 	c.db.First(&user, uint(claims["user_id"].(float64)))
 
 	if exceptions.HandlerErrors(
-		err, w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest,
+		err, w, "we could not retrieve userid from token", http.StatusBadRequest,
 	) {
 		return
 	}

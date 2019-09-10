@@ -67,9 +67,19 @@ func (t *Task) LoadRelationships(db *gorm.DB) {
 	var context Context
 
 	db.First(&createdBy, t.CreatedBy)
-	db.First(&currentUser, t.CurrentUserID)
 	db.First(&state, t.StateID)
 	db.First(&context, t.ContextID)
+
+	createdBy.LoadRelationships(db)
+
+	if t.CurrentUserID != nil {
+		var user User
+
+		db.First(&user, *t.CurrentUserID)
+		user.LoadRelationships(db)
+
+		currentUser = &user
+	}
 
 	t.CreatedBy = createdBy
 	t.CurrentUser = currentUser

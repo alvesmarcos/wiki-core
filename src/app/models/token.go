@@ -35,5 +35,7 @@ func (t *Token) LoadRelationships(db *gorm.DB) {
 
 	db.First(&user, t.UserID)
 
+	user.LoadRelationships(db)
+
 	t.User = user
 }

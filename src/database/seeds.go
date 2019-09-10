@@ -247,6 +247,16 @@ func objectTypes(db *gorm.DB) {
 	)
 }
 
+func actionStateSeeds(db *gorm.DB) {
+	var state models.State
+	var action models.Action
+
+	db.Where(models.State{Slug: "aguardando-video-referencia"}).First(&state)
+	db.Where(models.Action{Slug: "adicionar-video"}).First(&action)
+
+	db.Create(&models.ActionState{ActionID: action.ID, StateID: state.ID})
+}
+
 // RunSeeds - populate tables
 func RunSeeds(db *gorm.DB) {
 	stateSeeds(db)
@@ -256,4 +266,5 @@ func RunSeeds(db *gorm.DB) {
 	orientationSeeds(db)
 	profileSeeds(db)
 	objectTypes(db)
+	actionStateSeeds(db)
 }

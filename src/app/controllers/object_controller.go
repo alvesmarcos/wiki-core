@@ -34,16 +34,9 @@ func (o *ObjectController) IndexObjects(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	var objectType models.ObjectType
-	var context models.Context
-
 	// index fields related
-	for index, element := range objects {
-		o.db.First(&objectType, element.ObjectTypeID)
-		o.db.First(&context, element.ContextID)
-
-		objects[index].ObjectType = objectType
-		objects[index].Context = context
+	for index := range objects {
+		objects[index].LoadRelationships(o.db)
 	}
 
 	utils.SendJSON(w, &objects, http.StatusOK)

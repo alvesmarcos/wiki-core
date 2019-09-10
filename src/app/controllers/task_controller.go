@@ -32,22 +32,8 @@ func (t *TaskController) IndexTasks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var currentUser *models.User
-	var createdByUser models.User
-	var state models.State
-	var context models.Context
-
-	// index fields related
-	for index, element := range tasks {
-		t.db.First(&currentUser, element.CurrentUserID)
-		t.db.First(&createdByUser, element.CreatedBy)
-		t.db.First(&state, element.StateID)
-		t.db.First(&context, element.ContextID)
-
-		tasks[index].CurrentUser = currentUser
-		tasks[index].CreatedBy = createdByUser
-		tasks[index].State = state
-		tasks[index].Context = context
+	for index := range tasks {
+		tasks[index].LoadRelationships(t.db)
 	}
 
 	utils.SendJSON(w, &tasks, http.StatusOK)

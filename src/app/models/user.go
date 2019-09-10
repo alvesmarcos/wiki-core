@@ -45,10 +45,10 @@ func (u *User) LoadRelationships(db *gorm.DB) {
 
 	db.Where(&UserProfile{UserID: u.ID}).Find(&userprofiles)
 
-	for _, element := range userprofiles {
-		element.LoadRelationships(db)
+	for index := range userprofiles {
+		userprofiles[index].LoadRelationships(db)
 
-		profiles = append(profiles, element.Profile)
+		profiles = append(profiles, userprofiles[index].Profile)
 	}
 
 	u.Profiles = profiles

@@ -32,22 +32,8 @@ func (wf *WorkflowController) IndexWorkflows(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	var taskType models.TaskType
-	var statePrev models.State
-	var stateNext models.State
-	var action models.Action
-
-	// index fields related
-	for index, element := range workflows {
-		wf.db.First(&taskType, element.TaskTypeID)
-		wf.db.First(&statePrev, element.StatePrevID)
-		wf.db.First(&stateNext, element.StateNextID)
-		wf.db.First(&action, element.ActionID)
-
-		workflows[index].TaskType = taskType
-		workflows[index].StateNext = stateNext
-		workflows[index].StatePrev = statePrev
-		workflows[index].Action = action
+	for index := range workflows {
+		workflows[index].LoadRelationships(wf.db)
 	}
 
 	utils.SendJSON(w, &workflows, http.StatusOK)

@@ -57,19 +57,25 @@ func (a *Assignment) LoadRelationships(db *gorm.DB) {
 	var task Task
 	var actionstates []ActionState
 	var actions []Action
+	var orientation Orientation
 
 	db.First(&user, a.UserID)
 	db.First(&task, a.TaskID)
+	db.First(&orientation, a.OrientationID)
+
+	task.LoadRelationships(db)
+	user.LoadRelationships(db)
 
 	db.Where(&ActionState{StateID: task.StateID}).Find(&actionstates)
 
-	for _, element := range actionstates {
-		element.LoadRelationships(db)
+	for index := range actionstates {
+		actionstates[index].LoadRelationships(db)
 
-		actions = append(actions, element.Action)
+		actions = append(actions, actionstates[index].Action)
 	}
 
 	a.User = user
 	a.Task = task
+	a.Orientation = orientation
 	a.Actions = actions
 }

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -35,4 +36,20 @@ func (u *User) HashPassword() error {
 // CheckPassword - decode hash
 func (u *User) CheckPassword(password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
+}
+
+// LoadRelationships -
+func (u *User) LoadRelationships(db *gorm.DB) {
+	var profiles []Profile
+	var userprofiles []UserProfile
+
+	db.Where(&UserProfile{UserID: u.ID}).Find(&userprofiles)
+
+	for _, element := range userprofiles {
+		element.LoadRelationships(db)
+
+		profiles = append(profiles, element.Profile)
+	}
+
+	u.Profiles = profiles
 }

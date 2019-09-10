@@ -25,3 +25,15 @@ func AddUserProfileConstraints(db *gorm.DB) {
 		"profile_id", "profiles(id)", "CASCADE", "CASCADE",
 	)
 }
+
+// LoadRelationships -
+func (u *UserProfile) LoadRelationships(db *gorm.DB) {
+	var user User
+	var profile Profile
+
+	db.First(&user, u.UserID)
+	db.First(&profile, u.ProfileID)
+
+	u.User = user
+	u.Profile = profile
+}

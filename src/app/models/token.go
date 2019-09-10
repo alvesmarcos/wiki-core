@@ -28,3 +28,12 @@ func AddTokenConstraints(db *gorm.DB) {
 		"user_id", "users(id)", "CASCADE", "CASCADE",
 	)
 }
+
+// LoadRelationships -
+func (t *Token) LoadRelationships(db *gorm.DB) {
+	var user User
+
+	db.First(&user, t.UserID)
+
+	t.User = user
+}

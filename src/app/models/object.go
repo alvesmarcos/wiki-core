@@ -49,3 +49,15 @@ func AddObjectConstraints(db *gorm.DB) {
 		"context_id", "contexts(id)", "SET NULL", "CASCADE",
 	)
 }
+
+// LoadRelationships -
+func (o *Object) LoadRelationships(db *gorm.DB) {
+	var objectType ObjectType
+	var context Context
+
+	db.First(&objectType, o.ObjectTypeID)
+	db.First(&context, o.ContextID)
+
+	o.ObjectType = objectType
+	o.Context = context
+}

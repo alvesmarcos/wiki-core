@@ -25,3 +25,15 @@ func AddActionStateConstraints(db *gorm.DB) {
 		"state_id", "states(id)", "CASCADE", "CASCADE",
 	)
 }
+
+// LoadRelationships -
+func (t *ActionState) LoadRelationships(db *gorm.DB) {
+	var state State
+	var action Action
+
+	db.First(&state, t.StateID)
+	db.First(&action, t.ActionID)
+
+	t.State = state
+	t.Action = action
+}

@@ -58,3 +58,21 @@ func AddTaskConstraints(db *gorm.DB) {
 		"state_id", "states(id)", "SET NULL", "CASCADE",
 	)
 }
+
+// LoadRelationships -
+func (t *Task) LoadRelationships(db *gorm.DB) {
+	var createdBy User
+	var currentUser *User
+	var state State
+	var context Context
+
+	db.First(&createdBy, t.CreatedBy)
+	db.First(&currentUser, t.CurrentUserID)
+	db.First(&state, t.StateID)
+	db.First(&context, t.ContextID)
+
+	t.CreatedBy = createdBy
+	t.CurrentUser = currentUser
+	t.State = state
+	t.Context = context
+}

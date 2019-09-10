@@ -50,3 +50,21 @@ func AddWorkflowConstraints(db *gorm.DB) {
 		"action_id", "actions(id)", "SET NULL", "CASCADE",
 	)
 }
+
+// LoadRelationships -
+func (w *Workflow) LoadRelationships(db *gorm.DB) {
+	var taskType TaskType
+	var statePrev State
+	var stateNext State
+	var action Action
+
+	db.First(&taskType, w.TaskTypeID)
+	db.First(&statePrev, w.StatePrevID)
+	db.First(&stateNext, w.StateNextID)
+	db.First(&action, w.ActionID)
+
+	w.TaskType = taskType
+	w.StatePrev = statePrev
+	w.StateNext = stateNext
+	w.Action = action
+}
